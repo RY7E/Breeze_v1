@@ -1,16 +1,21 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const authRoutes = require("./routes/authRoutes.js");
-const app = express();
-
+const connectDB = require("./database/connect.js")
 dotenv.config();
-
 const PORT = process.env.PORT;
+const app = express();
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
+
 
 app.get("/", (req, res) => {
-    res.send("Hello World! hfhdhdh");
+    res.send("Home Page");
 })
 
 app.use("/auth", authRoutes);
 
-app.listen(PORT);
+app.listen(PORT, () => {
+    connectDB();
+    console.log(`Server started on port ${PORT}`);
+});
