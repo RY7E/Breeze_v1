@@ -35,12 +35,13 @@ const register = async (req, res) => {
 
         if (newUser) {
             // Generate JWT Token
-            // await generateTokenAndSetCookie(newUser._id, res);
+            // generateTokenAndSetCookie(newUser._id, res);
             // todo: export token and cookie functionality to a funciton in utils
+
             let token = jwt.sign({userid: newUser._id}, process.env.JWT_SECRET, {
                 expiresIn: "15d",
             });
-            res.cookie("jwttoken", token, {
+            res.cookie("token", token, {
                 maxAge: 15 * 24 * 60 * 60 * 1000,
                 httpOnly: true,
                 sameSite: "strict",
@@ -65,12 +66,47 @@ const register = async (req, res) => {
     }
 }
 
-const logout = (req, res) => {
-    res.send("User Logged Out");
+const login = async (req, res) => {
+    try {
+        let {username, password} = req.body;
+        let user = await User.findOne({username});
+
+        if (user) {
+            const verifyPassword = await bcrypt.compare(password, user.password);
+            if (verifyPassword) {
+                let token = jwt.sign({userid: user._id}, process.env.JWT_SECRET, {
+                    expiresIn: "15d",
+                });
+                res.cookie("token", token, {
+                    maxAge: 15 * 24 * 60 * 60 * 1000,
+                    httpOnly: true,
+                    sameSite: "strict",
+                    secure: process.env.NODE_ENV !== "development",
+                });
+
+                res.status(200).json({
+                    id: user._id,
+                    name: user.fullName,
+                    username: user.username,
+                })
+            }
+            else {
+                return res.status(400).json({error: "Incorrect username or password"})
+            }
+        }
+
+        if (!user) {
+            return res.status(400).json({error: "Incorrect username or password"})
+        }
+        
+    } catch (error) {
+        console.log("Error in Login controller", error.message);
+        res.status(500).json({error: "Internal Server Error"});
+    }
 }
 
-const login = (req, res) => {
-    res.send("User Logged In");
+const logout = (req, res) => {
+    res.send("User Logged Out");
 }
 
 module.exports = {login, logout, register};

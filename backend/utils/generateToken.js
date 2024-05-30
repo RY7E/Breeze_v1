@@ -1,14 +1,16 @@
 const jwt = require('jsonwebtoken');
+const cookieParser = require("cookie-parser");
 
 const generateTokenAndSetCookie = (userid, res) => {
-    const token = jwt.sign({userid: userid}, process.env.JWT_SECRET, {
-        expiresIn: '15d'
-    })
+    let token = jwt.sign({userid: userid}, process.env.JWT_SECRET, {
+        expiresIn: "15d",
+    });
 
     res.cookie("jwttoken", token, {
-        maxAge: 15 * 24 * 60 * 60 * 1000, // time in miliseconds
-        httpOnly: true,
-        sameSite: "strict"
+        maxAge: 15 * 24 * 60 * 60 * 1000,
+        hhtpOnly: true,
+        sameSite: "strict",
+        secure: proecess.env.NODE_ENV !== "development"
     })
 }
 
