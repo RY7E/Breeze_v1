@@ -1,6 +1,6 @@
 const User = require("../models/userModel")
 const bcrypt = require('bcrypt');
-const generateTokenAndSetCookie = require("../utils/generateToken");
+
 const jwt = require('jsonwebtoken');
 const cookieParser = require("cookie-parser");
 
@@ -72,7 +72,7 @@ const login = async (req, res) => {
         let user = await User.findOne({username});
 
         if (user) {
-            const verifyPassword = await bcrypt.compare(password, user.password);
+            const verifyPassword = await bcrypt.compare(password, user.password); 
             if (verifyPassword) {
                 let token = jwt.sign({userid: user._id}, process.env.JWT_SECRET, {
                     expiresIn: "15d",
@@ -106,7 +106,14 @@ const login = async (req, res) => {
 }
 
 const logout = (req, res) => {
-    res.send("User Logged Out");
+    try {
+        res.cookie("token", "", {maxAge: 0});
+        res.status(200).json({message: "Logged Out Successfully."})
+        
+    } catch (error) {
+        console.log("Error in logout controller. ", error.message);
+        res.status(500).json({error: "Internal Server Error."})
+    }
 }
 
 module.exports = {login, logout, register};

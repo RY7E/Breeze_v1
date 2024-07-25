@@ -1,6 +1,7 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const authRoutes = require("./routes/authRoutes.js");
+const messageRoutes = require('./routes/messageRoutes.js');
 const connectDB = require("./database/connect.js");
 const cookieParser = require('cookie-parser');
 dotenv.config();
@@ -15,6 +16,8 @@ app.get("/", (req, res) => {
 })
 
 app.use("/auth", authRoutes);
+app.use("/messages", messageRoutes);
+
 
 app.listen(PORT, () => {
     connectDB();

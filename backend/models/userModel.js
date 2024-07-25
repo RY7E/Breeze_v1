@@ -3,22 +3,22 @@ const mongoose = require('mongoose');
 const userSchema = mongoose.Schema({
     fullName: {
         type: String,
-        requried: true,
+        required: true,
     },
     username: {
         type: String,
-        requried: true,
+        required: true,
         unique: true,
     },
     password: {
         type: String,
-        requried: true,
+        required: true,
         minlength: 6,
     },
     pfp: {
         type: String,
         default: "",
     },
-});
+}, {timestamps: true});
 
 module.exports = mongoose.model("User", userSchema);
