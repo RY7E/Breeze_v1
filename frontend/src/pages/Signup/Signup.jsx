@@ -1,6 +1,25 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { Link } from 'react-router-dom';
+import useSignup from '../../hooks/useSignup';
 
-const SignUp = () => {    
+const SignUp = () => {  
+  
+  const [inputs, setInputs] = useState({
+		fullName: "",
+		username: "",
+		password: "",
+		confirmPassword: "",
+	});
+
+	const { loading, signup } = useSignup();
+
+	const handleSubmit = async (e) => {
+		e.preventDefault();
+		await signup(inputs);
+	};
+
+
+
   return (
     <div className='flex flex-col w-full h-screen items-center justify-center'>
       <div className='border-[1px] rounded-lg border-blue-300 flex flex-col items-center justify-center min-w-96 h-84 mx-auto'>
@@ -14,14 +33,17 @@ const SignUp = () => {
           </h1>
         </div>
 
-      <form>
+      <form onSubmit={handleSubmit}>
         <div className=' text-blue-300'>
           <label className='label p-2'>
             <span className=' text-blue-300 text-base label-text'>
               Full Name
             </span>
           </label>
-        <input type='text' placeholder='Geez! Not another John Doe' className='w-full max-w-xs input input-bordered input-info h-12' />
+          <input type='text' placeholder='Geez! Not another John Doe' className='w-full max-w-xs input input-bordered input-info h-12' 
+            value={inputs.fullName}
+            onChange={(e) => setInputs({...inputs, fullName: e.target.value})}
+          />
         </div> 
 
         <div className=' text-blue-300'>
@@ -30,7 +52,10 @@ const SignUp = () => {
               Username
             </span>
           </label>
-          <input type='text' placeholder='Your alias' className='w-full input input-bordered input-info max-w-xs h-12'  />
+            <input type='text' placeholder='Your alias' className='w-full input input-bordered input-info max-w-xs h-12' 
+              value={inputs.username}
+              onChange={(e) => setInputs({...inputs, username: e.target.value})}
+            />
         </div>
 
         <div>
@@ -39,17 +64,20 @@ const SignUp = () => {
               Password
             </span>
           </label>
-          <input type='password' placeholder="not 'password'" className='w-full input input-bordered input-info h-12' />
+            <input type='password' placeholder="try length 6 or more" className='w-full input input-bordered input-info h-12'
+              value={inputs.password}
+              onChange={(e) => setInputs({...inputs, password: e.target.value})}
+            />
         </div>
 
-        {/* <div>
+        <div>
 						<label className='label'>
-							<span className='text-base label-text'>Confirm Password</span>
+							<span className='text-blue-300 text-base label-text'>Confirm Password</span>
 						</label>
 						<input
 							type='password'
-							placeholder='Confirm Password'
-							className='w-full input input-bordered h-10'
+							placeholder="hope it wasn't 'password'!"
+							className='w-full input input-bordered input-info h-12'
 							value={inputs.confirmPassword}
 							onChange={(e) => setInputs({ ...inputs, confirmPassword: e.target.value })}
 						/>
@@ -62,15 +90,14 @@ const SignUp = () => {
 					>
 						Already have an account?
 					</Link>
-
+ 					
 					<div>
-						<button className='btn btn-block btn-sm mt-2 border border-slate-700' disabled={loading}>
-							{loading ? <span className='loading loading-spinner'></span> : "Sign Up"}
+          <button className='btn btn-block btn-sm mt-2 border border-slate-700' >
+          SignUp
+						{/* <button className='btn btn-block btn-sm mt-2 border border-slate-700' disabled={loading}>
+							{loading ? <span className='loading loading-spinner'></span> : "Sign Up"} */}
 						</button>
-					</div> */}
-
-
-
+					</div>
 
       </form>
       </div>

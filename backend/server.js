@@ -16,9 +16,9 @@ app.get("/", (req, res) => {
     res.send("Home Page");
 })
 
-app.use("/auth", authRoutes);
-app.use("/messages", messageRoutes);
-app.use("/users", userRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/messages", messageRoutes);
+app.use("/api/users", userRoutes);
 
 
 app.listen(PORT, () => {
