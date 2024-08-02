@@ -1,11 +1,9 @@
 /** @type {import('tailwindcss').Config} */
-module.exports = {
-  // content: ["./src/**/*.{html,js}"], //won't work 
-  content: ["./src/**/*.jsx"],
-  theme: {
-    extend: {},
-  },
-  plugins: [
-    require('daisyui'),
-  ],
-}
+export default {
+	content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+	theme: {
+		extend: {},
+	},
+	// eslint-disable-next-line no-undef
+	plugins: [require("daisyui")],
+};

@@ -1,14 +1,12 @@
-import React from 'react'
-import Sidebar from '../../components/sidebar/Sidebar';
-import MessageContainer from '../../components/messages/MessageContainer';
+import MessageContainer from "../../components/messages/MessageContainer";
+import Sidebar from "../../components/sidebar/Sidebar";
 
 const Home = () => {
-  return (
-		<div className='flex min-w-full min-h-min justify-center sm:h-[450px] md:h-[550px] rounded-lg overflow-hidden bg-gray-400 bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-0'>
+	return (
+		<div className='flex sm:h-[450px] md:h-[550px] rounded-3xl overflow-hidden bg-gray-400 bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-0 border-2 border-slate-500'>
 			<Sidebar />
 			<MessageContainer />
 		</div>
 	);
 };
-
-export default Home
+export default Home;
